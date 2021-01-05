@@ -2,4 +2,4 @@
 It's a program for learning node language;
 
 
-## 主要是一个联系的过程 冲啊！
+## 主要是一个练习的过程 冲啊！
