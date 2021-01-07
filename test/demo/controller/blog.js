@@ -1,4 +1,5 @@
 const sql = require("../sql/index");
+const moment = require('moment');
 
 // 引入sequelize对象
 const Sequelize = sql.sequelize;
@@ -15,14 +16,16 @@ blog.sync({ force: false });
 
 //数据库操作类
 class BlogModule {
-
     // 发表文章
     static async BlogPublish(data){
+        var currentTime = moment(Date.now().format('YYYY-MM-DD HH:mm:ss'))
+        console.log(currentTime)
         // const data = new Date().
         return blog.create({ // 创建模型的实例。
             blogName:data.blogName,
             content:data.content,
-            author:data.userName
+            author:data.userName,
+            // createTime:currentTime
         })
     }
 
@@ -49,7 +52,7 @@ class BlogModule {
         })
     }
 
-    //更改的博客
+    //更改博客
     static async upDateBlog(param){
         return await blog.update({
             blogId:param.BlogId,
@@ -71,3 +74,33 @@ class BlogModule {
         })
     }
 }
+
+/**
+ * 功能处理
+ * 这部分是处理逻辑的，
+ * 对应的,在Module里的方法，具体实现的逻辑要在下面实现出来
+ */
+class BlogControlller {
+    static async BlogPublish(ctx) {
+        try {
+            const param = {
+                blogName:ctx.request.body.blogName,
+                content:ctx.request.body.content,
+                author:ctx.request.body.userName,
+            }
+
+            //保存到数据库
+             await BlogModule.BlogPublish(param);
+
+            ctx.response.status = 200;
+            ctx.body = {
+                code:6240,
+                msg:'发布成功',
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+module.exports = BlogControlller;
