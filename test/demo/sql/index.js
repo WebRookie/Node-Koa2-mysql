@@ -29,6 +29,7 @@ var sequelize = new Sequelize({
 });
 
 sequelize.authenticate();
+sequelize.sync({force:true})
 console.log("Connection has been established successfully.");
 
-exports.module = sequelize;
+module.exports = sequelize;

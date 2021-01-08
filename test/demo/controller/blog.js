@@ -1,14 +1,16 @@
 const sql = require("../sql/index");
 const moment = require('moment');
+const sequelize = require('sequelize');
 
 // 引入sequelize对象
 const Sequelize = sql.sequelize;
 
 // 引入数据表模型
-const blog = Sequelize.import("../modules/blog");
+// const blog = Sequelize.import("../modules/blog");
+const blog = require('../modules/blog');
 
 //自动建表
-blog.sync({ force: false });
+// blog.sync({ force: false });
 // 如果使用 sequelize.sync() 将自动同步所有模型
 
 
