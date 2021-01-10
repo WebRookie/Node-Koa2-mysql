@@ -16,7 +16,10 @@ const blog = require('../modules/blog');
 
 
 
-//数据库操作类
+/**
+ * 数据库操作类
+ * 这部分是用来和数据库交流的一些方法。
+ */
 class BlogModule {
     // 发表文章
     static async BlogPublish(data){

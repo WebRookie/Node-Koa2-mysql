@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 var sequelize = new Sequelize({
   host: "localhost",
@@ -28,8 +28,21 @@ var sequelize = new Sequelize({
   },
 });
 
-sequelize.authenticate();
-sequelize.sync({force:true})
-console.log("Connection has been established successfully.");
+ sequelize.authenticate().then(async () => {
+   console.log(sequelize.models)
+   console.log("Connection has been established successfully.");
+    const User = require('../modules/user');
+    const Blog = require('../modules/blog');
+    User.hasMany(Blog,{
+      foreignKey:{
+        name:'userId',
+        type:DataTypes.INTEGER,
+        allowNull:false
+      }
+    });
+  sequelize.sync({alter: true })
+
+ });
+
 
 module.exports = sequelize;
