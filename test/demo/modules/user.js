@@ -55,5 +55,5 @@ const User = db.define(
 User.sync({
     alter: true
 })
-console.log(User == db.models.User) //说明已经存进去了
+console.log(User == db.models.User) //说明已经初始化好模型了
 module.exports = User

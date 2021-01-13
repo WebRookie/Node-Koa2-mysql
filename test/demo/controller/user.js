@@ -1,6 +1,7 @@
 // const { Sequelize } = require("sequelize/types");
 const sql = require("../sql/index");
 const argon2 = require("argon2");
+const jwt = require('jsonwebtoken');
 
 //引入sequelize对象
 // const Sequelize = sql;
@@ -59,7 +60,7 @@ class UserController {
       try {
         const check = await userModule.getUserInfo(ctx.request.body.userName);
         if (check) {
-          ctx.responce.status = 200;
+          ctx.status = 200;
           ctx.body = {
             code: 6240,
             msg: "用户已存在",
@@ -102,13 +103,16 @@ class UserController {
           msg: '用户名和密码不能为空'
         }
       } else {
-        const qeury = await userModule.getUserInfo(ctx.request.userName);
-
+        const qeury = await userModule.getUserInfo(ctx.request.body.userName);
         if (qeury) {
           if (qeury.password == ctx.request.body.password) {
+            const token = jwt.sign({
+              userId:ctx.request.body.userId,
+            }, 'WebRookie', {expiresIn: 3600})
             return ctx.body = {
               code: 0,
               msg: '登录成功',
+              token:token,
               data: qeury //未处理返回的数据。
             }
           } else {
@@ -126,14 +130,19 @@ class UserController {
       }
     } catch (error) {
       console.log(error)
+      throw Error
+      
     }
   }
 
   static async getUserInfo(ctx) {
+    console.log(token)
     try {
+      console.log(result)
       //分情况，如果是通过userId查看
       if (ctx.request.body.userId) {
         let query = await userModule.getUserInfo(ctx.request.body.userId);
+        
         if (query.userId == ctx.request.body.userId) {
           const info = {
             createdAt: query.createdAt,
@@ -161,7 +170,6 @@ class UserController {
             email: query.email,
             userName: query.userName,
           };
-
           return (ctx.body = {
             code: 6240,
             msg: "查询成功",
@@ -175,7 +183,13 @@ class UserController {
           msg: '查无此人'
         })
       }
-    } catch (error) {}
+    } catch (error) {
+      ctx.status = 401;
+      return ctx.body = {
+        code:'-1',
+        msg:'登录过期，请重新登录'
+      }
+    }
   }
 }
 

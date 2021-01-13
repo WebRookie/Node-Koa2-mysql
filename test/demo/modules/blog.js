@@ -2,7 +2,6 @@ const {
     DataTypes
 } = require('sequelize')
 const db = require('../sql/index')
-const moment = require('moment')
 const {
     models
 } = require('../sql/index');
@@ -72,12 +71,10 @@ const Blog = db.define(
     }, {
         define: {
             freezeTableName: true,
-
-        }
+        } // 避免自动生成表明
     }
 )
 
-console.log(models)
 Blog.sync({
     alter: true
 });

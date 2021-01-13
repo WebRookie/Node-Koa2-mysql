@@ -26,7 +26,9 @@ var sequelize = new Sequelize({
     min: 2,
     idle: 10000,
   },
-});
+}
+
+);
 
  sequelize.authenticate().then(async () => {
    console.log(sequelize.models)
