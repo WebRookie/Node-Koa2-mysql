@@ -1,14 +1,5 @@
-const sql = require("../sql/index");
-const sequelize = require('sequelize');
-
-// 引入sequelize对象
-const Sequelize = sql.sequelize;
-
 // 引入数据表模型
-// const blog = Sequelize.import("../modules/blog");
 const blog = require('../modules/blog');
-// const user = require('./user');
-
 
 
 /**
@@ -23,9 +14,8 @@ class BlogModule {
         return blog.create({ // 创建模型的实例。
             blogName:data.blogName,
             content:data.content,
-            author:data.author,
+            userName:data.userName,
             userId:data.userId,
-            // createTime:currentTime
         })
     }
 
@@ -74,8 +64,6 @@ class BlogModule {
             }
         })
     }
-
-  
 }
 
 /**
@@ -102,7 +90,7 @@ class BlogControlller {
             const param = {
                 blogName:ctx.request.body.blogName,
                 content:ctx.request.body.content,
-                author:ctx.request.body.author,
+                userName:ctx.request.body.userName,
                 userId:ctx.request.body.userId
             }
 

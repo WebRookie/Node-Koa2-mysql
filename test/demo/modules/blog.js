@@ -37,10 +37,10 @@ const Blog = db.define(
             Field: 'blogName',
             comment: '博客名称',
         },
-        author: {
+        userName: {
             type: DataTypes.STRING(10),
             allowNull: false,
-            Field: 'author',
+            Field: 'userName',
             comment: '作者名称',
         },
         content: {
@@ -48,24 +48,9 @@ const Blog = db.define(
             allowNull: false,
             Field: 'content',
             comment: '博客内容',
-        },
-        // createTime:{
-        //     type:Datatypes.Date,
-        //     //默认为创建时间。
-        //     defaultValue:moment(Date.now().format('YYYY-MM-DD HH:mm:ss')),
-        //     allowNull:false,
-        //     Field:'createTime',
-        //     comment:'创建时间',
-        // },
-        // updateTime:{
-        //     type:Datatypes.Date,
-        //     allowNull:true,
-        //     Field:'updateTime',
-        //     comment:'更新时间'
-        // }
+        }
     }, {
         timestamps: true,
-        // createdAt:moment(Date.now().format('YYYY-MM-DD HH:mm:ss')),
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     }, {
@@ -74,7 +59,7 @@ const Blog = db.define(
         } // 避免自动生成表明
     }
 )
-
+//自动生表
 Blog.sync({
     alter: true
 });

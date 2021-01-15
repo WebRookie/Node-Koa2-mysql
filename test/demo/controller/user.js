@@ -1,37 +1,22 @@
-// const { Sequelize } = require("sequelize/types");
-const sql = require("../sql/index");
-const argon2 = require("argon2");
 const jwt = require('jsonwebtoken');
-
-//引入sequelize对象
-// const Sequelize = sql;
-
 // 导入model(数据表模型)
-// const user = Sequelize.import("../modules/user");
 const user = require('../modules/user');
-const sequelize = require("../sql/index");
-// console.log(user)
-// const user = Sequelize.models.User;
 
-//自动建表 否
-// user.sync({ force: false });
+//引入sequelize实例  (为了完成事务的实现)
+// const sequelize = require("../sql/index");
 
 // 数据库操作类
 class userModule {
   static async userRegist(param) {
     try {
-      const result = await sequelize.transaction(async (t) => {
-        const instance = await user.create({
+      return await user.create({
           userName: param.userName,
           //   password: await argon2.hash(param.password),      二期，优化代码，增加密码的安全性
           password: param.password,
           mobileNumber: param.mobileNumber,
           email: param.email,
-        },{
-          transaction:t
         });
-        return instance;
-      })
+       
     } catch (error) {
       console.log(error)
     }
@@ -44,7 +29,14 @@ class userModule {
       },
     });
   }
-
+  
+  static async checkUser(userName){
+    return await user.findOne({
+      where:{
+        userName,
+      }
+    })
+  }
 }
 
 class UserController {
@@ -87,9 +79,10 @@ class UserController {
           msg: '用户名和密码不能为空'
         }
       } else {
-        const qeury = await userModule.getUserInfo(ctx.request.body.userName);
+        const qeury = await userModule.checkUser(ctx.request.body.userName);
         if (qeury) {
           if (qeury.password == ctx.request.body.password) {
+            //发布token
             const token = jwt.sign({
               userId:qeury.userId,
             }, 'WebRookie', {expiresIn: '1h'})
@@ -114,7 +107,11 @@ class UserController {
       }
     } catch (error) {
       console.log(error)
-      throw Error
+      ctx.status = 400;
+      ctx.body={
+        code:-1,
+        data:error.message
+      }
       
     }
   }

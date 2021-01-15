@@ -5,7 +5,6 @@ const BlogControlller = require('../controller/blog');
 
 router.prefix('/api')
 
-
 //写博客
 router.post('/blogPublish',BlogControlller.blogPublish);
 //查看博客列表
