@@ -45,28 +45,13 @@ class userModule {
     });
   }
 
-  static async getUserInfo(userName) {
-    return await user.findOne({
-      where: {
-        userName,
-      },
-    });
-  }
 }
 
 class UserController {
   static async register(ctx) {
     if (ctx.request.body.userName && ctx.request.body.password) {
       try {
-        const check = await userModule.getUserInfo(ctx.request.body.userName);
-        if (check) {
-          ctx.status = 200;
-          ctx.body = {
-            code: 6240,
-            msg: "用户已存在",
-          };
-          return;
-        } else {
+       //允许用户名相同的存在。因为有些用户可能使用姓名当做用户名
           const param = {
             userName: ctx.request.body.userName,
             password: ctx.request.body.password,
@@ -81,7 +66,6 @@ class UserController {
             code: 6240,
             msg: "注册成功",
           };
-        }
       } catch (error) {
         console.log(error)
         ctx.status = 416;
@@ -107,8 +91,8 @@ class UserController {
         if (qeury) {
           if (qeury.password == ctx.request.body.password) {
             const token = jwt.sign({
-              userId:ctx.request.body.userId,
-            }, 'WebRookie', {expiresIn: 3600})
+              userId:qeury.userId,
+            }, 'WebRookie', {expiresIn: '1h'})
             return ctx.body = {
               code: 0,
               msg: '登录成功',
@@ -136,13 +120,9 @@ class UserController {
   }
 
   static async getUserInfo(ctx) {
-    console.log(token)
     try {
-      console.log(result)
       //分情况，如果是通过userId查看
-      if (ctx.request.body.userId) {
         let query = await userModule.getUserInfo(ctx.request.body.userId);
-        
         if (query.userId == ctx.request.body.userId) {
           const info = {
             createdAt: query.createdAt,
@@ -159,35 +139,12 @@ class UserController {
             data: info,
           });
         }
-      } else if (ctx.request.body.userName) {
-        let query = await userModule.getUserInfo(ctx.request.body.userName);
-        if (query.userName == ctx.request.body.userName) {
-          const info = {
-            createdAt: query.createdAt,
-            updatedAt: query.updatedAt,
-            mobileNumber: query.mobileNumber,
-            userId: query.userId,
-            email: query.email,
-            userName: query.userName,
-          };
-          return (ctx.body = {
-            code: 6240,
-            msg: "查询成功",
-            data: info,
-          });
-        }
-      } else {
-        ctx.code = 404
-        return (ctx.body = {
-          code: -1,
-          msg: '查无此人'
-        })
-      }
     } catch (error) {
       ctx.status = 401;
       return ctx.body = {
         code:'-1',
-        msg:'登录过期，请重新登录'
+        msg:'请求失败',
+        data:error.message
       }
     }
   }

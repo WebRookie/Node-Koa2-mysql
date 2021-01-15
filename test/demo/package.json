@@ -2,6 +2,7 @@
   "name": "demo",
   "version": "0.1.0",
   "private": true,
+  "main": "./bin/www",
   "scripts": {
     "start": "nodemon bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",

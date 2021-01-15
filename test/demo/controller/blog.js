@@ -7,11 +7,7 @@ const Sequelize = sql.sequelize;
 // 引入数据表模型
 // const blog = Sequelize.import("../modules/blog");
 const blog = require('../modules/blog');
-const user = require('./user');
-//自动建表
-// blog.sync({ force: false });
-// 如果使用 sequelize.sync() 将自动同步所有模型
-
+// const user = require('./user');
 
 
 
@@ -27,24 +23,25 @@ class BlogModule {
         return blog.create({ // 创建模型的实例。
             blogName:data.blogName,
             content:data.content,
-            author:data.userName,
+            author:data.author,
             userId:data.userId,
             // createTime:currentTime
         })
     }
 
     //查看博客内容
-    static async getBlogDetail(BlogId){
+    static async getBlogDetail(blogId){
         return await blog.findOne({
             where:{
-                BlogId
+                blogId
             }
         })
     }
 
     //获取全部博客
     static async getAllBlog(){
-        return await blog.findAll()
+        const list = await blog.findAndCountAll()
+        return list;
     }
 
     //获取当前用户的所有博客
@@ -77,6 +74,8 @@ class BlogModule {
             }
         })
     }
+
+  
 }
 
 /**
@@ -87,18 +86,23 @@ class BlogModule {
 class BlogControlller {
     static async blogPublish(ctx) {
         try {
-            //验证身份
-            const name = await user.userModule.getUserInfo(ctx.request.body.userId);
-            if(name != ctx.request.body.userName){
-                return ctx.body = {
-                    status:403,
-                    msg:'身份不对'
-                }
-            }
+            //验证身份   
+            /**
+             * 需不需要验证身份呢？
+             * token会帮忙验证吧？
+             */
+            // const name = await user.userModule.getUserInfo(ctx.request.body.userId);
+            // if(name != ctx.request.body.userName){
+            //     return ctx.body = {
+            //         status:403,
+            //         msg:'身份不对'
+            //     }
+            // }
+            
             const param = {
                 blogName:ctx.request.body.blogName,
                 content:ctx.request.body.content,
-                author:ctx.request.body.userName,
+                author:ctx.request.body.author,
                 userId:ctx.request.body.userId
             }
 
@@ -111,11 +115,57 @@ class BlogControlller {
                 msg:'发布成功',
             }
         } catch (error) {
+            ctx.status = 400;
+            ctx.body = {
+                code:-1,
+                msg:error.message
+            }
             console.log(error);
         }
     }
+
+      //查看博客列表
+    static async getAllBlog(ctx){
+          try {
+            const result =  await BlogModule.getAllBlog();
+            ctx.status = 200
+            ctx.body = {
+                code:6240,
+                msg:'查询成功',
+                data:result
+            }
+            return  
+          } catch (error) {
+              ctx.status = 400;
+              ctx.body ={
+                  code:-1,
+                  data:error.message
+              }
+          }
+       
+
+    }
     
-    static async getBlogDetail(){}
+    static async getBlogDetail(ctx){
+        try {
+            const blogId = ctx.request.body.blogId
+            const result = await BlogModule.getBlogDetail(blogId);
+            ctx.status = 200;
+            ctx.body = {
+                code:6240,
+                msg:'查询成功',
+                data:result,
+
+            }
+
+        } catch (error) {
+            ctx.status = 400;
+            ctx.body = {
+                code:-1,
+                data:error.message
+            }
+        }
+    }
 }
 
 module.exports = BlogControlller;

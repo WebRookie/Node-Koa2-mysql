@@ -7,13 +7,11 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const  db = require('./sql/index'); //引入mysql配置文件
 const cors = require('koa-cors') //解决跨域的问题
-const koajwt = require('koa-jwt');
-
+const tools = require('./public/javascripts/tool')
 
 
 const blog = require('./routes/blog')
 const users = require('./routes/users')
-const jwt = require('koa-jwt')
 
 
 app.use(cors());
@@ -42,40 +40,14 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-
-app.use( async(ctx,next) => {
-  console.log(ctx.request.header)
-  let token = ctx.request.header.token;
-  if(!token) {
-      ctx.status = 401;
-      ctx.body = {
-        code:"-1",
-        msg:'请登录后重试'
-      };
-      return;
-  }
-  try {
-    let payload = jwt.verify(token, 'WebRookie');
-    const userId = ctx.request.body.userId;
-    if(payload.userId !== userId || !payload.userId){
-      throw new Error('token无效')
-    }
-    await next();
-  } catch (error) {
-      ctx.status = 400;
-      ctx.body = {
-        code:'-1',
-        msg:'token无效'
-      }
-  }
-})
+app.use(tools());
 
 
-app.use(koajwt({
-  secret:'WebRookie'
-}).unless({
-  path:[/^\/users\/login/]
-}));
+// app.use(koajwt({
+//   secret:'WebRookie'
+// }).unless({
+//   path:[/^\/api\/login/]
+// }));
 
 
 
