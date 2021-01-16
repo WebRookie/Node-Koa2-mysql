@@ -2,9 +2,7 @@ const {
     DataTypes
 } = require('sequelize')
 const db = require('../sql/index')
-const {
-    models
-} = require('../sql/index');
+
 
 const User = require('./user')
 //创建blog模型
@@ -37,6 +35,12 @@ const Blog = db.define(
             Field: 'blogName',
             comment: '博客名称',
         },
+        userId:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            Field:'userId',
+            comment:'用户唯一标识'
+        },
         userName: {
             type: DataTypes.STRING(10),
             allowNull: false,
@@ -63,4 +67,10 @@ const Blog = db.define(
 Blog.sync({
     alter: true
 });
+
+
+User.hasMany(Blog,{
+    foreignKey:'Id'
+});
+Blog.belongsTo(User)
 module.exports = Blog;
