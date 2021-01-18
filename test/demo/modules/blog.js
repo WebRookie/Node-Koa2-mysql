@@ -70,7 +70,12 @@ Blog.sync({
 
 
 User.hasMany(Blog,{
-    foreignKey:'Id'
+    foreignKey:'userId',
+    onDelete:'RESTRICT',
+    onUpdate:'RESTRICT',sourceKey:'userId'
 });
-Blog.belongsTo(User)
+Blog.belongsTo(User,{
+    foreignKey:"userId",
+    targetKey:'userId'
+})
 module.exports = Blog;

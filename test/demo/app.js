@@ -8,6 +8,7 @@ const logger = require('koa-logger')
 const  db = require('./sql/index'); //引入mysql配置文件
 const cors = require('koa-cors') //解决跨域的问题
 const tools = require('./public/javascripts/tool')
+const moment = require('moment');
 
 
 const blog = require('./routes/blog')
@@ -36,8 +37,9 @@ app.use(logger())
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  const ms = new Date() - start;
+  const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
+  console.log(`${ctx.method} ${ctx.url} - ${ms}ms 时间：${currentTime}`)
 })
 
 app.use(tools());

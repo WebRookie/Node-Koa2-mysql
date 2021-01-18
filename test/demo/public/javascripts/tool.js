@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 module.exports = () => {
     return async (ctx, next) => {
         //请求路径为api/xxx,并且不是api/login,因为登录的时候还没有token
-        if(ctx.request.path.startsWith('/api/') && !ctx.request.path.endsWith('login' ) && ctx.request.method != 'GET') {
+        if(ctx.request.path.startsWith('/api/') && !ctx.request.path.endsWith('login' ) && ctx.request.method != 'GET' && !ctx.request.path.endsWith('regist')) {
             // 暂时请求方式都是post，token放在请求头中
             let token = ctx.request.header.token;
             if(!token) {

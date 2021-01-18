@@ -1,6 +1,7 @@
 // 引入数据表模型
 const blog = require('../modules/blog');
-
+// token验证
+const jwt = require('jsonwebtoken');
 
 /**
  * 数据库操作类
@@ -74,24 +75,16 @@ class BlogModule {
 class BlogControlller {
     static async blogPublish(ctx) {
         try {
-            //验证身份   
-            /**
-             * 需不需要验证身份呢？
-             * token会帮忙验证吧？
-             */
-            // const name = await user.userModule.getUserInfo(ctx.request.body.userId);
-            // if(name != ctx.request.body.userName){
-            //     return ctx.body = {
-            //         status:403,
-            //         msg:'身份不对'
-            //     }
-            // }
+            //验证身份  (通过token来决定是谁发的..) 
+            let token = ctx.request.header.token;
+            let verify = jwt.verify(token,'WebRookie');
+            const userId = verify.userId
             
             const param = {
                 blogName:ctx.request.body.blogName,
                 content:ctx.request.body.content,
                 userName:ctx.request.body.userName,
-                userId:ctx.request.body.userId
+                userId:userId
             }
 
             //保存到数据库
@@ -108,7 +101,7 @@ class BlogControlller {
                 code:-1,
                 msg:error.message
             }
-            console.log(error);
+            console.log(error.message);
         }
     }
 

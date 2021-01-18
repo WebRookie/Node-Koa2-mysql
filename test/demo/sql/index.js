@@ -26,22 +26,12 @@ var sequelize = new Sequelize({
     min: 2,
     idle: 10000,
   },
-}
-
-);
+});
 
  sequelize.authenticate().then(async () => {
    console.log(sequelize.models)
    console.log("Connection has been established successfully.");
-    const User = require('../modules/user');
-    const Blog = require('../modules/blog');
-    User.hasMany(Blog,{
-      foreignKey:{
-        name:'userId',
-        type:DataTypes.INTEGER,
-        allowNull:false
-      }
-    });
+  
   sequelize.sync({alter: true })
 
  });
