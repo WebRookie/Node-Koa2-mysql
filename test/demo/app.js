@@ -13,6 +13,7 @@ const moment = require('moment');
 
 const blog = require('./routes/blog')
 const users = require('./routes/users')
+const comment = require('./routes/comment')
 
 
 app.use(cors());
@@ -59,6 +60,7 @@ app.use(tools());
 // routes
 app.use(users.routes(), users.allowedMethods())
 app.use(blog.routes(), blog.allowedMethods())
+app.use(comment.routes(),comment.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
