@@ -23,9 +23,11 @@ class CommentModule {
             include:[
                 {
                     model:user,
+                    attributes:['userId','userName']   //标识关联的模型中需要返回的字段。
                 }
             ]
         });
+        return result
         console.log(result)
     }
 }
@@ -59,15 +61,16 @@ class CommentController {
         try {
             const blogId = ctx.request.body.blogId;
             const query = await CommentModule.getComment(blogId);
+            console.log('123')
+            console.log(query)
             ctx.status = 200;
             ctx.body = {
                 code:6240,
                 msg:'请求成功',
                 data:query,
             }
-            console.log(query)
         } catch (error) {
-            
+            console.log(error)
         }
     }
 

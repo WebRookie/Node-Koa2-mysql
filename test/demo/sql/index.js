@@ -1,3 +1,7 @@
+/**
+ * sql的相关配置
+ */
+
 const { Sequelize, DataTypes } = require("sequelize");
 
 var sequelize = new Sequelize({
@@ -29,7 +33,7 @@ var sequelize = new Sequelize({
 });
 
  sequelize.authenticate().then(async () => {
-   console.log(sequelize.models)
+  //  console.log(sequelize.models)   实例下的所有model
    console.log("Connection has been established successfully.");
   
   sequelize.sync({alter: true })

@@ -69,7 +69,7 @@ class UserController {
         return;
       }
     }
-  }
+  }       
 
   static async login(ctx) {
     try {
@@ -114,7 +114,7 @@ class UserController {
       }
       
     }
-  }
+  }     
 
   static async getUserInfo(ctx) {
     try {
@@ -144,6 +144,32 @@ class UserController {
         data:error.message
       }
     }
+  }
+  
+  static async changePassword(ctx) {
+     try {
+        //已登录的情况下，需要知道原密码后再设置新密码。
+        const old = ctx.request.body.password;
+        const userId = ctx.request.body.userId
+        const verify = await userModule.getUserInfo(userId);
+        if(verify.password == old){
+              verify.password = ctx.request.body.newPassword
+              await verify.save();;
+              ctx.status = 200;
+              ctx.body = {
+                code:6240,
+                msg:'修改成功',
+              }
+        }else{
+          ctx.status = 401;
+          ctx.boyd = {
+            code:-1,
+            msg:'密码错误'
+          }
+        }
+     } catch (error) {
+       
+     }
   }
 }
 

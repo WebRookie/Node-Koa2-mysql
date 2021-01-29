@@ -53,8 +53,29 @@ Comment.sync({
     alter:true
 });
 
-User.hasMany(Comment,{foreignKey:'userId', targetKey:'userId',sourceKey:'userId'});
-Comment.belongsTo(Blog,{foreignKey:'blogId', targetKey:'blogId',sourceKey:'blogId'});
+// User.hasMany(Comment,{foreignKey:'userId', targetKey:'userId',sourceKey:'userId'});
+// Comment.belongsTo(Blog,{foreignKey:'blogId', targetKey:'blogId',sourceKey:'blogId'});
+User.hasMany(Comment,{
+    foreignKey:{
+        name:'userId'
+    }
+});
+Blog.hasMany(Comment,{
+    foreignKey:{
+        name:'blogId'
+    }
+})
+Comment.belongsTo(User,{
+    foreignKey:{
+        name:'userId'
+    }
+});
+Comment.belongsTo(Blog,{
+    foreignKey:{
+        name:'blogId'
+    }
+});
+
 /**
  * 将在外键(blog)foreignkey的名字为blogId。
  * 最前面的是元模型，就是source 后面的是目的模型 就是target(目的模型的名字就是targetKey)

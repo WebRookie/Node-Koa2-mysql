@@ -11,6 +11,7 @@ const Blog = db.define(
     // 属性
     {
         blogId: {
+            // type:DataTypes.UUID
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
