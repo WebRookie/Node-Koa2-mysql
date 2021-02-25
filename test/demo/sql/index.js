@@ -9,7 +9,7 @@ var sequelize = new Sequelize({
   port: 3306,
   username: "user",
   password: "pass",
-  database: "blog",
+  database: "shop",
   dialect: "mysql",
   // 是否开启日志， 对照生成的sql语句
   logging: false,

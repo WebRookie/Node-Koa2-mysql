@@ -1,12 +1,13 @@
 const sequelize = require('sequelize')
 const { Sequelize } = require('sequelize')
+const {dbName, host, port, username, password } = require('../config').database
 
 var sequelize = new Sequelize({
-    host:'localhost',
-    port:'3306',
-    username:'user',
-    password:'pass',
-    database:'shop',
+    host: host,
+    port: port,
+    username: username,
+    password: password,
+    database: dbName,
     dialect:'mysql',
     logging:false,
     dialectOptions:{
