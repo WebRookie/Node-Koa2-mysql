@@ -4,7 +4,7 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "enhance": false,
     "postcss": true,
@@ -41,7 +41,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.14.4",
-  "appid": "wx6780511abd1d0ea1",
+  "appid": "wx4360135e5a95b229",
   "projectname": "myBlogFrontEnd",
   "debugOptions": {
     "hidedInDevtools": []

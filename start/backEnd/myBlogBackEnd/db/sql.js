@@ -1,8 +1,8 @@
-const sequelize = require('sequelize')
+// const sequelize = require('sequelize')
 const { Sequelize } = require('sequelize')
-const {dbName, host, port, username, password } = require('../config').database
+const {dbName, host, port, username, password } = require('../util/config').database
 
-var sequelize = new Sequelize({
+const sequelize = new Sequelize({
     host: host,
     port: port,
     username: username,
@@ -11,7 +11,7 @@ var sequelize = new Sequelize({
     dialect:'mysql',
     logging:false,
     dialectOptions:{
-        charset:'urf8mb4',
+        charset:'utf8mb4',
         supportBigNumbers:true,
         bigNumberStrings:true
     },
@@ -26,6 +26,7 @@ sequelize.authenticate().then(async () => {
     //  console.log(sequelize.models)   实例下的所有model
      console.log("Connection has been established successfully.");
     
-    sequelize.sync({alter: true })
+     sequelize.sync({alter: true })
   
 });
+module.exports = sequelize

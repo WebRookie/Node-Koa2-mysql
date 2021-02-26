@@ -1,14 +1,20 @@
 // app.js
+var http = require('./api/request');
+
 App({
   onLaunch() {
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
+    wx.$http = http;
     // 登录
     wx.login({
       success: res => {
+        const code = res.code
+        console.log(code)
+        wx.$http.login({code:code}).then(res => {
+          console.log(res)
+        })
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })

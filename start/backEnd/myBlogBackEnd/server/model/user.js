@@ -1,11 +1,11 @@
-const sequelize = require('../../db/sql');
 const {DataTypes, Model} = require('sequelize');
+const sequelize = require('../../db/sql');
 const crypto = require('crypto')
 
-//定义用户模型
-class User extends Model {
 
-}
+
+//定义用户模型
+class User extends Model {}
 
 
 // 初始化用户模型
@@ -14,7 +14,8 @@ User.init({
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        comment:'用户id'
+        comment:'用户id',
+        allowNull:false
     },
     nickName:DataTypes.STRING,
     email: {
