@@ -10,21 +10,35 @@ class User extends Model {}
 
 // 初始化用户模型
 User.init({
-    userId: {
+    user_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         comment:'用户id',
         allowNull:false
     },
-    nickName:DataTypes.STRING,
+    nick_name:DataTypes.STRING,
+    gender:{
+        type:DataTypes.ENUM('male','famale','none'),
+        defaultValue:'none' 
+    },
+    img:{
+        type:DataTypes.CHAR,
+        comment:'用户头像地址'
+    },
     email: {
         type:DataTypes.STRING(128),
-        unique:true
+        unique: 'column'
+
     },
-    password: {
-        type:DataTypes.STRING(32),
-        allowNull: false,
+    point: {
+        type:DataTypes.INTEGER(11),
+        defaultValue:0,
+        comment:'用户积分'
+    },
+    // password: {
+        // type:DataTypes.STRING(32),
+        // allowNull: false,
 
         // 暂不进行密码加密处理
         // set(value) {
@@ -32,10 +46,20 @@ User.init({
         //     const sc = crypto
         //     this.setDataValue()
         // }
-    },
-    openId: {
+    // },
+    open_id: {
         type: DataTypes.STRING(64),
-        unique: true
+        unique: 'column',
+        // unique:true,
+        comment:'用户的openId'
+        //这里不能使用unique:true 
+        /**
+         * 当sequelize.sync({alter:true})的时候，每次执行都会添加一个index(column, column2, column3，。。)
+         */
+    },
+    last_login_date:{
+        type:DataTypes.DATE,
+        comment:'最后登录时间'
     }
 },{
     sequelize, //传递连接的实例
@@ -44,7 +68,4 @@ User.init({
     createdAt: true,
     updatedAt: true,
 })
-
-module.exports = {
-    User
-}
+module.exports = User

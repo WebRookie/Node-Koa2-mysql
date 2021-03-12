@@ -1,0 +1,2 @@
+<view bindtap="getPoint">获取用户积分</view>
+<view>{{point}}</view>

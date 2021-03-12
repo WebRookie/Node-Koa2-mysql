@@ -1,5 +1,5 @@
 // const sequelize = require('sequelize')
-const { Sequelize } = require('sequelize')
+const { Sequelize, Model } = require('sequelize')
 const {dbName, host, port, username, password } = require('../util/config').database
 
 const sequelize = new Sequelize({
@@ -25,8 +25,8 @@ const sequelize = new Sequelize({
 sequelize.authenticate().then(async () => {
     //  console.log(sequelize.models)   实例下的所有model
      console.log("Connection has been established successfully.");
-    
-     sequelize.sync({alter: true })
+    await sequelize.sync({alter: true })
+    console.log(sequelize.models)
   
 });
 module.exports = sequelize

@@ -34,11 +34,21 @@ app.use(async (ctx, next) => {
 // app.use(index.routes(),index)
 app.use(api.routes(), api.allowedMethods())
 
+app.use(async (ctx,next) => {
+  try {
+    await next();
+  } catch (err) {
+      ctx.response.status = err.statusCode || err.status || 500;
+      ctx.response.body = {
+        message:err.message
+      };
+  }
+})
 
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-});
+// // error-handling
+// app.on('error', (err, ctx) => {
+//   console.error('server error', err, ctx)
+// });
 
 
 /**
