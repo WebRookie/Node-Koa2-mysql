@@ -1,6 +1,7 @@
 // const http = require('../../util/axios')
 const config = require('../../util/config')
 const User = require('../model/user');
+const UserPointDetail = require('../model/userPointDetail')
 const axios = require('axios');
 const moment = require('moment');
 
@@ -27,6 +28,13 @@ class UserModel{
        });
    }
    
+   static async getPointDetail(userId){
+        return await UserPointDetail.findOne({
+           where:{
+               user_id:userId
+           }
+       });
+   }
 }
 
 class UserController{
@@ -125,7 +133,7 @@ class UserController{
                 data:{
                     point:point
                 }
-            }
+            }   
         }else {
             ctx.status = 200;
             ctx.body = {
@@ -135,6 +143,38 @@ class UserController{
             }
         }
         
+    }
+
+    /**
+     * 获取积分详情
+     * @param userId
+     */
+    static async getPointDetail(ctx){
+        let request = ctx.request.body;
+        let result = await UserModel.getPointDetail(request.userId);
+        if(result){
+            let data = {
+                id:user_point_detail_id,
+                createDate:result.create_date,
+                pointType:result.point_type,
+                point:point
+            }
+            ctx.status = 200;
+            ctx.body = {
+                code:1024,
+                data:data,
+                msg:'查询成功'
+            }
+        }else{
+            // 没有这个人所以为零，没有记录
+            ctx.status = 200;
+            ctx.body = {
+                code:1024,
+                data:null,
+                msg:'暂无记录'
+            }
+            
+        }
     }
 }
 
