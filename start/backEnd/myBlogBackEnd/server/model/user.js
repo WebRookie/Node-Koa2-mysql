@@ -57,10 +57,26 @@ User.init({
          * 当sequelize.sync({alter:true})的时候，每次执行都会添加一个index(column, column2, column3，。。)
          */
     },
+    today_sign:{
+        type:DataTypes.ENUM('0','1'),
+        defaultValue:'0',
+        comment:'用户是否签到，0-是未签到。1-是已签到',
+
+    },
+    yesterday_sign:{
+        type:DataTypes.ENUM('0','1'),
+        defaultValue:'0',
+        comment:'用户是否签到，0-是未签到。1-是已签到',
+    },
     last_login_date:{
         type:DataTypes.DATE,
         comment:'最后登录时间'
-    }
+    },
+    continue_sign:{
+        type:DataTypes.INTEGER,
+        defaultValue:0,
+        comment:'用户连续签到'
+    },
 },{
     sequelize, //传递连接的实例
     tableName: 'user',

@@ -35,6 +35,23 @@ class UserModel{
            }
        });
    }
+
+   static async updateLoginTime(time,userId){
+       await User.update({last_login_date:time},{
+           where:{
+               user_id:userId
+           }
+       });
+       return;
+   }
+
+   static async updateUserInfo(info,userId){
+        await User.update({nick_name:info.nickName,img:info.img,gender:info.gender},{
+            where:{
+                user_id:userId
+            }
+        })
+   }
 }
 
 class UserController{
@@ -51,32 +68,23 @@ class UserController{
             await axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${config.appid}&secret=${config.appscret}&js_code=${req.code}&grant_type=authorization_code`).then(async res => {
                 let openId = res.data.openid;
                 let sessionKey  = res.data.session_key;
+                let userId;
+                  // 需要更新用户信息 第一次登录
                 let result = await  UserModel.checkUserStatus(openId);
-                if(!result) {
-                    // 需要更新用户信息 第一次登录
-                    let userId = await UserModel.createUser(openId);
-                    ctx.status = 200;
-                    ctx.body = {
-                        code:100,
-                        msg:'登录成功',
-                        data:{
-                            openId:openId,
-                            sessionKey:sessionKey,
-                            userId:userId
-                        }
-                    }
-                }else {
-                    ctx.status = 200;
-                    ctx.body = {
-                        code:101,
-                        msg:'登录成功',
-                        data:{
-                            openId:openId,
-                            sessionKey:sessionKey,
-                            userId:result.user_id
-                        }
+                result ? userId = result.user_id : userId = await UserModel.createUser(openId);
+                const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+                await UserModel.updateLoginTime(currentTime,userId);
+                ctx.status = 200;
+                ctx.body = {
+                    code:100,
+                    msg:'登录成功',
+                    data:{
+                        openId:openId,
+                        sessionKey:sessionKey,
+                        userId:userId
                     }
                 }
+
             })
         } catch (error) {
             console.log(error)
@@ -101,15 +109,12 @@ class UserController{
             }else {
                 gender = 'none'
             }
-            await User.update({
-                nick_name:nickName,
+            const data = {
+                nickName:nickName,
                 img:img,
                 gender:gender
-            },{
-                where:{
-                    user_id:userId
-                }
-            });
+            }
+            await UserModel.updateUserInfo(data,userId)
             ctx.status = 200;
             ctx.body = {
                 code:1024,
@@ -174,6 +179,31 @@ class UserController{
                 msg:'暂无记录'
             }
             
+        }
+    }
+
+    /**
+     * 用户签到
+     * @param userId
+     */
+    static async userSign(ctx){
+        let request = ctx.request.body;
+        let userInfo = await User.getUser();
+        // 今天没签到
+        if(userInfo.today_sign == 0){
+            ctx.status = 200;
+            ctx.body = {
+                code:1024,
+                msg:'签到成功',
+                data:'success'
+            }
+
+        }else {
+            ctx.status = 200;
+            ctx.body = {
+                code:1024,
+                msg:'今天已经签到过了',
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ const sequelize = new Sequelize({
     database: dbName,
     dialect:'mysql',
     logging:false,
+    timezone:'+8:00',
     dialectOptions:{
         charset:'utf8mb4',
         supportBigNumbers:true,
