@@ -6,5 +6,7 @@ const api = {
   updateUserInfo:data => post('/updateUserInfo',data),
   //获取用户积分
   getUserPoint:data => post('/getUserPoint',data),
+  // 用户签到
+  userSign:data=>post(`/userSign`,data)
 }
 module.exports = api

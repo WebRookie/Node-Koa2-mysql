@@ -9,11 +9,19 @@ Page({
   },
   getPoint(){
     const userId = wx.getStorageSync('userId');
+    this.setData({
+      userId :userId
+    })
     wx.$http.getUserPoint({userId:userId}).then(res => {
       console.log(res)
       this.setData({
         point:res.data.data.point
       })
+    })
+  },
+  userSign(){
+    wx.$http.userSign({userId:this.data.userId}).then(res =>{
+      console.log(res)
     })
   },
   /**

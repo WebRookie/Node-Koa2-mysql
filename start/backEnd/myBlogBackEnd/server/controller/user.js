@@ -52,6 +52,16 @@ class UserModel{
             }
         })
    }
+   
+//    用户签到
+   static async userDaySign(userId){
+        await User.update({today_sign:1},{
+            where:{
+                user_id:userId
+            }
+        })
+
+   }
 }
 
 class UserController{
@@ -188,9 +198,10 @@ class UserController{
      */
     static async userSign(ctx){
         let request = ctx.request.body;
-        let userInfo = await User.getUser();
+        let userInfo = await UserModel.getUser(request.userId);
         // 今天没签到
         if(userInfo.today_sign == 0){
+            await UserModel.userDaySign(userInfo.user_id);
             ctx.status = 200;
             ctx.body = {
                 code:1024,
