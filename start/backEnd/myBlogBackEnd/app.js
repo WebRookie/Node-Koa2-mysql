@@ -3,13 +3,17 @@ const app = new Koa()
 // const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
 const moment = require('moment')
+const log4js = require('log4js')
+const logConfig = require('./util/log/config')
+log4js.configure(logConfig)
 
-const index = require('./routes/index')
+// const index = require('./routes/index')
 const api = require('./routes/api')
 
-
+// 定时任务
+// const auto = require('./middleware/auto')
+// app.use(auto);
 // error handler
 onerror(app)
 
@@ -17,16 +21,17 @@ onerror(app)
 app.use(bodyparser({}))
  
 // app.use(json())
-app.use(logger())
 // app.use(require('koa-static')(__dirname + '/public'))
 
+app.use(log4js.connectLogger(log4js.getLogger('http'), { level: 'trace'}))
 
-// logger
+// logger 控制台的情况
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
   const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
+  let stringLog = `${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`)
 })
 
@@ -34,6 +39,7 @@ app.use(async (ctx, next) => {
 // app.use(index.routes(),index)
 app.use(api.routes(), api.allowedMethods())
 
+// 异常处理
 app.use(async (ctx,next) => {
   try {
     await next();
@@ -44,11 +50,6 @@ app.use(async (ctx,next) => {
       };
   }
 })
-
-// // error-handling
-// app.on('error', (err, ctx) => {
-//   console.error('server error', err, ctx)
-// });
 
 
 /**

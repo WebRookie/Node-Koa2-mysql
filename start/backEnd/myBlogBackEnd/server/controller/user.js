@@ -53,14 +53,31 @@ class UserModel{
         })
    }
    
-//    用户签到
+    //  用户签到
    static async userDaySign(userId){
-        await User.update({today_sign:1},{
-            where:{
+        await User.update({today_sign:'1'},{
+            where: {
                 user_id:userId
             }
         })
+   }
 
+   // 用户连续签到
+   static async  userChangeContinueStatus(userId,status){
+       await User.update({continue_sign:status},{
+           where: {
+               user_id: userId
+           }
+       })
+   }
+
+//    更改昨日签到状态
+   static async userSignYesterday(userId,status) {
+       await User.update({yesterday_sign:status},{
+           where: {
+               user_id: userId
+           }
+       })
    }
 }
 
@@ -201,7 +218,20 @@ class UserController{
         let userInfo = await UserModel.getUser(request.userId);
         // 今天没签到
         if(userInfo.today_sign == 0){
+            //
             await UserModel.userDaySign(userInfo.user_id);
+            // 昨天没有签到签到了
+            if(userInfo.yesterday_sign == 0){
+                /**
+                 * 还有未完成的逻辑，这里需要每天都对当日的签到规整，规整时需要判断
+                 * 规整时判断当天签到是否完成，如果完成则置昨天签到是1，今天签到为0
+                 * 如果为签到这当天还是0，昨天敲到为0，连续签到也为0（均是未签到）
+                 */
+                await UserModel.userSignYesterday(userInfo.user_id,1);
+                await UserModel.userChangeContinueStatus(userInfo.user_id,1)
+            }
+            // 此时积分需要加1
+            // await UserPointDetail
             ctx.status = 200;
             ctx.body = {
                 code:1024,
@@ -212,7 +242,7 @@ class UserController{
         }else {
             ctx.status = 200;
             ctx.body = {
-                code:1024,
+                code:2048,
                 msg:'今天已经签到过了',
             }
         }

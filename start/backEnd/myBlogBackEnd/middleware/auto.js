@@ -1,11 +1,15 @@
 const shedule = require('node-schedule');
-const User = require('../server/model/user')
+let User = require('../server/model/user')
 /**
  * 自动每0.00分更改签到状态
  */
 
 function autoBackSignStatus(){
-    shedule.scheduleJob('0 0 0 * * *',function(){
-        let userInfo = User.findOne({})
+    shedule.scheduleJob('0 1 * * * *',function(){
+        User.findAll({attributes:['today_sign']}).on('success', function(projects ) {
+            console.log(projects);
+        })
+        // let userInfo = User.findOne({})
     })
 }
+exports.autoBackSignStatus = autoBackSignStatus
