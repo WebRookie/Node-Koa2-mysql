@@ -4,6 +4,7 @@ const User = require('../model/user');
 const UserPointDetail = require('../model/userPointDetail')
 const axios = require('axios');
 const moment = require('moment');
+const sequelize = require('../../db/sql');
 
 
 class UserModel{
@@ -55,14 +56,14 @@ class UserModel{
    
     //  用户签到
    static async userDaySign(userId){
-        await User.update({today_sign:'1'},{
+        await User.update({today_sign:'1',point:sequelize.literal('`point`+ 1')},{
             where: {
                 user_id:userId
             }
         })
    }
 
-   // 用户连续签到
+   // 更改用户连续签到状态
    static async  userChangeContinueStatus(userId,status){
        await User.update({continue_sign:status},{
            where: {
@@ -78,6 +79,18 @@ class UserModel{
                user_id: userId
            }
        })
+   }
+
+//    用户积分变化方法
+/**
+ * 
+ * @param {用户Id} userId 
+ * @param {积分变化数量} point 
+ * @param {变化类型1-订单消费。2-签到获取。3-订单退回。4-完成任务。} type 
+ */
+   static async userPointChange(userId,point,type,username){
+        const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        await UserPointDetail.create({user_id:userId,point:point,point_type:type,create_date:currentTime,user_name:username})
    }
 }
 
@@ -216,10 +229,20 @@ class UserController{
     static async userSign(ctx){
         let request = ctx.request.body;
         let userInfo = await UserModel.getUser(request.userId);
+        if(!userInfo){
+            ctx.status = 404;
+            return ctx.body = {
+                code:-10086,
+                data:'null',
+                msg:'错误，用户不存在'
+            }
+        }
         // 今天没签到
         if(userInfo.today_sign == 0){
-            //
+            //用户今日签到
             await UserModel.userDaySign(userInfo.user_id);
+            await UserModel.userPointChange(userInfo.user_id,1,2,userInfo.nick_name)
+            
             // 昨天没有签到签到了
             if(userInfo.yesterday_sign == 0){
                 /**
@@ -227,8 +250,12 @@ class UserController{
                  * 规整时判断当天签到是否完成，如果完成则置昨天签到是1，今天签到为0
                  * 如果为签到这当天还是0，昨天敲到为0，连续签到也为0（均是未签到）
                  */
-                await UserModel.userSignYesterday(userInfo.user_id,1);
-                await UserModel.userChangeContinueStatus(userInfo.user_id,1)
+
+
+                // 这部分不应该有业务去完成，而是由每天的自动归位方法完成。所以目前暂不操作。
+                // await UserModel.userSignYesterday(userInfo.user_id,1);
+                // await UserModel.userChangeContinueStatus(userInfo.user_id,1)
+
             }
             // 此时积分需要加1
             // await UserPointDetail
@@ -241,7 +268,7 @@ class UserController{
 
         }else {
             ctx.status = 200;
-            ctx.body = {
+            ctx.body = {                              
                 code:2048,
                 msg:'今天已经签到过了',
             }

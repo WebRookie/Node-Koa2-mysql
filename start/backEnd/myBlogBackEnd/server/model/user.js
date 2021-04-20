@@ -1,6 +1,6 @@
 const {DataTypes, Model} = require('sequelize');
 const sequelize = require('../../db/sql');
-const crypto = require('crypto')
+// const crypto = require('crypto')
 
 
 

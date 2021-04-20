@@ -4,9 +4,6 @@ const app = new Koa()
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const moment = require('moment')
-const log4js = require('log4js')
-const logConfig = require('./util/log/config')
-log4js.configure(logConfig)
 
 // const index = require('./routes/index')
 const api = require('./routes/api')
@@ -15,7 +12,7 @@ const api = require('./routes/api')
 // const auto = require('./middleware/auto')
 // app.use(auto);
 // error handler
-onerror(app)
+// onerror(app)
 
 // middlewares
 app.use(bodyparser({}))
@@ -23,7 +20,7 @@ app.use(bodyparser({}))
 // app.use(json())
 // app.use(require('koa-static')(__dirname + '/public'))
 
-app.use(log4js.connectLogger(log4js.getLogger('http'), { level: 'trace'}))
+
 
 // logger 控制台的情况
 app.use(async (ctx, next) => {

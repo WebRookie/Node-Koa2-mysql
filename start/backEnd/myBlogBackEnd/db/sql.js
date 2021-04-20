@@ -25,9 +25,12 @@ const sequelize = new Sequelize({
 });
 sequelize.authenticate().then(async () => {
     //  console.log(sequelize.models)   实例下的所有model
-     console.log("Connection has been established successfully.");
-    await sequelize.sync({alter: true })
+    console.log("Connection has been established successfully.");
     console.log(sequelize.models)
-  
+    sequelize.sync();
+
+}).catch(err => {
+    console.error('连接失败：',error)
 });
+
 module.exports = sequelize

@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/request/request"
+    "pages/request/request",
+    "pages/action/action"
   ],
   "tabBar": {
     "list": [
@@ -13,6 +14,10 @@
       {
         "pagePath": "pages/request/request",
         "text": "请求接口"
+      },
+      {
+        "pagePath": "pages/action/action",
+        "text": "操作起来"
       }
     ]
   },

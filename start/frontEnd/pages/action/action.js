@@ -1,40 +1,13 @@
-// pages/request/request.js
+// pages/action/action.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    
+
   },
-  getPoint(){
-    const userId = wx.getStorageSync('userId');
-    this.setData({
-      userId :userId
-    })
-    wx.$http.getUserPoint({userId:userId}).then(res => {
-      console.log(res)
-      this.setData({
-        point:res.data.data.point
-      })
-    })
-  },
-  userSign(){
-    wx.$http.userSign({userId:this.data.userId}).then(res =>{
-      console.log(res)
-      if(res.data.code == 1024){
-        wx.showToast({
-          title: '签到成功',
-          duration:1500
-        })
-      }else {
-        wx.showToast({
-          title: '签到失败',
-          icon:'error'
-        })
-      }
-    })
-  },
+
   /**
    * 生命周期函数--监听页面加载
    */

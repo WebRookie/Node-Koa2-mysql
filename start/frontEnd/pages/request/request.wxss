@@ -1,1 +1,4 @@
 /* pages/request/request.wxss */
+view {
+  border:1px solid pink;
+}

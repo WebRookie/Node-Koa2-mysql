@@ -18,9 +18,13 @@ UserPointDetail.init({
         defaultValue:null,
         comment:'用户Id'
     },
+    user_name:{
+        type:DataTypes.STRING(10),
+        comment:'用户昵称'
+    },
     create_date:{
         type:DataTypes.DATE,
-        comment:'订单创建时间'
+        comment:'创建时间'
     },
     point_type:{
         type:DataTypes.INTEGER,
@@ -35,4 +39,5 @@ UserPointDetail.init({
     tableName:'user_point_detail',
     timestamps:false
 })
+
 module.exports = UserPointDetail

@@ -16,35 +16,41 @@ Page({
     })
   },
   onLoad() {
-    if (app.globalData.userInfo) {
+    if(wx.getStorageInfoSync('userInfo')){
+      let userInfo = wx.getStorageSync('userInfo')
       this.setData({
-        userInfo: app.globalData.userInfo,
+        userInfo: userInfo,
         hasUserInfo: true
-      })
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
       })
     }
   },
   getUserInfo(e) {
+    let userId = wx.getStorageSync('userId')
+    wx.getUserProfile({
+      desc:'xx',
+      success:res=>{
+        console.log(res)
+        app.globalData.userInfo = res.userInfo
+        const userInfo = res.userInfo;
+        wx.setStorageSync('userInfo', userInfo)
+        const param = {
+          userId:userId,
+          nickName:res.userInfo.nickName,
+          img:res.userInfo.avatarUrl,
+          gender:res.userInfo.gender
+        }
+        wx.$http.updateUserInfo(param).then(res => {
+          console.log(res)
+        })
+        this.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
+        return;
+      }
+    })
     console.log(e)
+    return;
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
