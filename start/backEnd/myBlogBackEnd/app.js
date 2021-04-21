@@ -2,8 +2,10 @@ const Koa = require('koa')
 const app = new Koa()
 // const json = require('koa-json')
 const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
+// const bodyparser = require('koa-bodyparser')
+const koaBody = require('koa-body');
 const moment = require('moment')
+const path = require('path')
 
 // const index = require('./routes/index')
 const api = require('./routes/api')
@@ -15,7 +17,25 @@ const api = require('./routes/api')
 // onerror(app)
 
 // middlewares
-app.use(bodyparser({}))
+// app.use(bodyparser({}))
+app.use(koaBody({
+  multipart:true,
+  formidable: {
+    uploadDir: path.join(__dirname,'/public/upload/'),
+    keepExtensions:true,
+    maxFieldsSize:1024*1024*100,
+    onFileBegin:(file)=>{
+      try {
+        let newName = 'NewName' + '.' + file.name.split('.')[1];  
+        let uploadPath = path.join(__dirname, '/public/upload/') + `/${newName}`;
+        file.path = uploadPath
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+  }
+}))
  
 // app.use(json())
 // app.use(require('koa-static')(__dirname + '/public'))
