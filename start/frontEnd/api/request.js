@@ -7,6 +7,8 @@ const api = {
   //获取用户积分
   getUserPoint:data => post('/getUserPoint',data),
   // 用户签到
-  userSign:data=>post(`/userSign`,data)
+  userSign:data=>post(`/userSign`,data),
+  // 发布博客
+  publishBlog:data=>post(`/publishBlog`,data)
 }
 module.exports = api

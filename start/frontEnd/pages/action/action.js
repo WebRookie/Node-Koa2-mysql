@@ -5,14 +5,42 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    content:""
   },
-
+  input(e){
+    let value = e.detail.value;
+    this.setData({
+      content:value
+    })
+  },
+  submit(){
+    let param = {
+      userId:this.data.userId,
+      content:this.data.content,
+    }
+    wx.$http.publishBlog(param).then(res=>{
+      if(res.data.code = 1024){
+        wx.showToast({
+          title: '发布成功',
+          duration:1500
+        })
+        setTimeout(()=>{
+          wx.switchTab({
+            url: '/pages/request/request',
+          })
+        },3000)
+      }
+      console.log(res)
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    const userId = wx.getStorageSync('userId');
+    this.setData({
+      userId:userId
+    })
   },
 
   /**

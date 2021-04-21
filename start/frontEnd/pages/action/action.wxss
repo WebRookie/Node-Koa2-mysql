@@ -1,1 +1,5 @@
 /* pages/action/action.wxss */
+view {
+  padding:2rpx 3rpx;
+  border:1px solid yellow;
+}

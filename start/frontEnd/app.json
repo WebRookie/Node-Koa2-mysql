@@ -14,11 +14,8 @@
       {
         "pagePath": "pages/request/request",
         "text": "请求接口"
-      },
-      {
-        "pagePath": "pages/action/action",
-        "text": "操作起来"
       }
+
     ]
   },
   "window": {

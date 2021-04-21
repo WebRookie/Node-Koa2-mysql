@@ -35,6 +35,11 @@ Page({
       }
     })
   },
+  writeBlog(){
+    wx.navigateTo({
+      url: '/pages/action/action',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

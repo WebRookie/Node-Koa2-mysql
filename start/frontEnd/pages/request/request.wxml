@@ -1,4 +1,4 @@
 <view bindtap="getPoint">获取用户积分</view>
 <view>{{point}}</view>
 <view bindtap="userSign">用户签到</view>
-<view>写博客</view>
+<view bindtap="writeBlog">写博客</view>

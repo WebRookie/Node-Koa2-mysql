@@ -43,4 +43,7 @@ Blog.init({
     createdAt:'created_at',
     updatedAt:'updated_at',
 })
+
 module.exports = Blog
+
+// 需要写对应的持久层方法，sequelize才会自动生成相应的表

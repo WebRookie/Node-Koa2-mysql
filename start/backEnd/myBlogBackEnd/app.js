@@ -28,7 +28,7 @@ app.use(async (ctx, next) => {
   await next()
   const ms = new Date() - start
   const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
-  let stringLog = `${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`;
+  // let stringLog = `${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`)
 })
 

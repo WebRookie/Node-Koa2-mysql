@@ -1,2 +1,3 @@
 <!--pages/action/action.wxml-->
-<text>pages/action/action.wxml</text>
+<textarea maxlength="500" bindinput="input" value="{{content}}"></textarea>
+<view bindtap="submit">发布</view>
