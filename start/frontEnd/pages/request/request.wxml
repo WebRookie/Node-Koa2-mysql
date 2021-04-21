@@ -2,3 +2,4 @@
 <view>{{point}}</view>
 <view bindtap="userSign">用户签到</view>
 <view bindtap="writeBlog">写博客</view>
+<view bindtao="listBlog">查看博客</view>

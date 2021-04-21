@@ -17,4 +17,6 @@ router.post('/userSign',UserController.userSign)
 
 router.post('/publishBlog',BlogController.blogPublish)
 
+router.post('/listAllBlog', BlogController.blogList)
+
 module.exports = router;
