@@ -21,8 +21,8 @@ class BlogModel {
      * @param {用户名} userName 
      * @returns 
      */
-    static publishBlog(userId,content,userName){
-      return Blog.create({user_id:userId,content:content,author_name:userName})
+    static publishBlog({userId,content,userName,picture = null}){
+      return Blog.create({user_id:userId,content:content,author_name:userName,picture:picture})
     }
 
     /**
@@ -85,7 +85,13 @@ class BlogController {
             }
         }
         try{
-            let result = await BlogModel.publishBlog(userId,request.content,userInfo.nick_name);
+            let result;
+            if(request.picture){
+                // 判断博客是否含有图片
+                result = await BlogModel.publishBlog({userId:userId, content:request.content, userName:userInfo.nick_name, picture:request.picture});
+            }else {
+                result = await BlogModel.publishBlog({userId:userId,content:request.content,userName:userInfo.nick_name});
+            }
             ctx.code = 200;
             ctx.body = {
                 code:1024,

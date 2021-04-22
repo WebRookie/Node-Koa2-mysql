@@ -6,6 +6,9 @@ const path = require('path')
 class PublicMethod {
     static async uploadFile(ctx){
         console.log(ctx)
+        // 暂时就只是返回存放的地址，只能上传一个一个文件
+        let filePath = ctx.request.files.file;
+        return filePath
         // ctx.request.files[xxx] 这个里面是参数名
         // let file = ctx.request.files.file
         // // console.log(file)

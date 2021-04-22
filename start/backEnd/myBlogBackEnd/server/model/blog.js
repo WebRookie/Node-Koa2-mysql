@@ -35,6 +35,12 @@ Blog.init({
         type:DataTypes.INTEGER,
         defaultValue:0,
         comment:'博客评论数量'
+    },
+    picture: {
+        type:DataTypes.STRING(1500),
+        defaultValue:null,
+        allowNull:true,
+        comment:'博客图片'
     }
 },{
     sequelize,
