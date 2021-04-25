@@ -3,6 +3,7 @@ const path = require('path')
 
 
 
+
 class PublicMethod {
     static async uploadFile(ctx){
         console.log(ctx)

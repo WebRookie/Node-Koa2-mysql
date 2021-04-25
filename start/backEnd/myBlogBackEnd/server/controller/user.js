@@ -5,6 +5,7 @@ const UserPointDetail = require('../model/userPointDetail')
 const axios = require('axios');
 const moment = require('moment');
 const sequelize = require('../../db/sql');
+const sendMail = require('../plugin/mail')
 
 
 class UserModel{
@@ -102,6 +103,11 @@ class UserController{
     static async login(ctx){
             // const result =  await UserModel.checkUserStatus(req.code)
         try {
+            // 邮箱验证功能start
+            // let emailArray = ['912962951@qq.com','1002490065@qq.com','993504432@qq.com','572055250@qq.com','572055250@qq.com','1074059209@qq.com','1048722426@qq.com','572055250@qq.com','1748086204@qq.com','1216081508@qq.com','1721568306@qq.com','993042495@qq.com']
+            // let result = sendMail(emailArray,7758521)
+            // 邮箱验证功能end
+            console.log(result) 
             const req = ctx.request.body;
             const currentTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
             console.log(currentTime)
