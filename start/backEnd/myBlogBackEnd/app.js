@@ -7,6 +7,9 @@ const koaBody = require('koa-body');
 const moment = require('moment')
 const path = require('path')
 
+//引入log4js封装好的工具
+const logUtil = require('./util/log');
+
 // const index = require('./routes/index')
 const api = require('./routes/api')
 
@@ -18,6 +21,7 @@ const api = require('./routes/api')
 
 // middlewares
 // app.use(bodyparser({}))
+//上传功能
 app.use(koaBody({
   multipart:true,
   formidable: {
@@ -46,10 +50,28 @@ app.use(koaBody({
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
-  const ms = new Date() - start
+  const ms = new Date() - start;
   const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
   // let stringLog = `${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`;
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`)
+})
+//logger 日志输出
+app.use(async(ctx, next) => {
+  const start = new Date()
+  try {
+    //开始进入下一个中间件
+    await next();
+    //记录用时；
+    const ms = new Date() - start;
+    //记录响应日志
+    logUtil.logResponse(ctx, ms);
+
+  } catch (error) {
+    //记录用时；
+    const ms = new Date() - start;
+    //记录异常日志
+    logUtil.logError(ctx, error, ms);
+  }
 })
 
 // routes

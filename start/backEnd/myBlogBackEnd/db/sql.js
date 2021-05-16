@@ -23,6 +23,8 @@ const sequelize = new Sequelize({
     }
     
 });
+//MacOS记得要先打开mysql的服务。。不然启动不起来。
+// 还有数据库也要联系上
 sequelize.authenticate().then(async () => {
     //  console.log(sequelize.models)   实例下的所有model
     console.log("Connection has been established successfully.");
@@ -30,7 +32,7 @@ sequelize.authenticate().then(async () => {
     sequelize.sync();
 
 }).catch(err => {
-    console.error('连接失败：',error)
+    console.error('连接失败：',err)
 });
 
 module.exports = sequelize
