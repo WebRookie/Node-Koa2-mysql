@@ -1,6 +1,7 @@
 <!--index.wxml-->
 <view class="container">
   <view class="userinfo">
+  <view bindtap="loginIn" class="login">登录</view>
     <button wx:if="{{!hasUserInfo && canIUse}}"  bindtap="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>

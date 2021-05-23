@@ -122,7 +122,7 @@ class UserController{
                 await UserModel.updateLoginTime(currentTime,userId);
                 ctx.status = 200;
                 ctx.body = {
-                    code:100,
+                    code:1024,
                     msg:'登录成功',
                     data:{
                         openId:openId,

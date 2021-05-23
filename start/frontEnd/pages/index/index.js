@@ -16,8 +16,9 @@ Page({
     })
   },
   onLoad() {
-    if(wx.getStorageInfoSync('userInfo')){
+    if(wx.getStorageInfoSync('userInfo').trim() != ""){
       let userInfo = wx.getStorageSync('userInfo')
+      console.log(userInfo)
       this.setData({
         userInfo: userInfo,
         hasUserInfo: true
@@ -55,6 +56,14 @@ Page({
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
+    })
+  },
+  loginIn(){
+    wx.getUserProfile({
+      desc:'获取您的信息',
+      success:res =>{
+        console.log(res)
+      }
     })
   }
 })

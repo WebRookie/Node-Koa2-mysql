@@ -53,7 +53,7 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start;
   const currentTime = moment().format('YYYY-MM-DD HH:mm:ss')
   // let stringLog = `${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms 时间: ${currentTime}`)
+  console.log(`${ctx.method} - ${ctx.status} ${ctx.url} - ${ms}ms 时间: ${currentTime}`)
 })
 //logger 日志输出
 app.use(async(ctx, next) => {
@@ -74,10 +74,6 @@ app.use(async(ctx, next) => {
   }
 })
 
-// routes
-// app.use(index.routes(),index)
-app.use(api.routes(), api.allowedMethods())
-
 // 异常处理
 app.use(async (ctx,next) => {
   try {
@@ -85,10 +81,19 @@ app.use(async (ctx,next) => {
   } catch (err) {
       ctx.response.status = err.statusCode || err.status || 500;
       ctx.response.body = {
-        message:err.message
+        message:'服务接口错误。'
       };
+      console.log(err.message)
   }
 })
+
+
+
+
+// routes
+// app.use(index.routes(),index)
+app.use(api.routes(), api.allowedMethods())
+
 
 
 /**
