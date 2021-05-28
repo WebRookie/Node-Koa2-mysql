@@ -6,6 +6,7 @@ const onerror = require('koa-onerror')
 const koaBody = require('koa-body');
 const moment = require('moment')
 const path = require('path')
+const autoTask = require('./middleware/auto')
 
 //引入log4js封装好的工具
 const logUtil = require('./util/log');
@@ -40,7 +41,7 @@ app.use(koaBody({
     }
   }
 }))
-
+autoTask.autoBackSignStatus();
 // app.use(json())
 // app.use(require('koa-static')(__dirname + '/public'))
 

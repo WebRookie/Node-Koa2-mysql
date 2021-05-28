@@ -35,7 +35,7 @@ let formatResponse = (ctx, resTime) => {
     logText += `response status: ${ctx.status} \n`;
 
     //响应内容
-    logText += `response body: ${ctx.body} \n`;
+    logText += `response body: ${JSON.stringify(ctx.body)} \n`;
 
     //响应日志结束
     logText += '************************ error log start ************************** \n';

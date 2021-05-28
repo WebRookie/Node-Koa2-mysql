@@ -6,7 +6,8 @@ let User = require('../server/model/user')
 
 function autoBackSignStatus(){
     shedule.scheduleJob('0 1 * * * *',function(){
-        User.findAll({attributes:['today_sign']}).on('success', function(projects ) {
+        User.findAll({
+            attributes:['today_sign']}).on('success', function(projects ) {
             console.log(projects);
         })
         // let userInfo = User.findOne({})
