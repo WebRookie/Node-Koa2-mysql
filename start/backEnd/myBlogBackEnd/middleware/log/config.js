@@ -2,6 +2,7 @@
  * 文件配置了log4js的一些属性。目前还没有搞清楚是原理。。 //所以暂时先不用了。。。
  */
 
+// 这个文件暂时没用，使用的配置是@/config/logger_config.js 这个保留的原因就是使用起来对比 2021-05-31 11:12
 const log4js = require("log4js");
 
 const logConfig = {

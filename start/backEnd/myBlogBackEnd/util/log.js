@@ -1,4 +1,5 @@
 var log4js = require('log4js');
+const moment = require('moment');
 
 var logConfig = require('../config/logger_config');
 
@@ -19,6 +20,12 @@ logUtil.logError = (ctx, error, resTime) => {
 //封装响应日志
 logUtil.logResponse = (ctx, resTime) => {
     if(ctx) responseLogger.info(formatResponse(ctx, resTime));
+}
+
+//格式化自动任务执行日志
+logUtil.autoTaskExecuteLog = (fnName) => {
+    let logText = new String();
+
 }
 
 //格式化响应日志
@@ -95,5 +102,8 @@ let formatRequestLog = (req, resTime) => {
     logText += `response Time: ${resTime} \n`;
     return logText;
 }
+
+
+
 
 module.exports = logUtil

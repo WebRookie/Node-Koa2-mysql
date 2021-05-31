@@ -2,4 +2,7 @@
 
 /node_modules
 
+# 不上传所有的log文件
+*.log 
+
 .DS_Store

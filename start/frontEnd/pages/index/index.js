@@ -16,7 +16,7 @@ Page({
     })
   },
   onLoad() {
-    if(wx.getStorageInfoSync('userInfo').trim() != ""){
+    if(wx.getStorageInfoSync('userInfo') && wx.getStorageInfoSync('userInfo').trim() != ""){
       let userInfo = wx.getStorageSync('userInfo')
       console.log(userInfo)
       this.setData({
