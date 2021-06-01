@@ -81,7 +81,8 @@ User.init({
     sequelize, //传递连接的实例
     tableName: 'user',
     timestamps: true,
-    createdAt: true,
-    updatedAt: true,
+    createdAt: 'create_at',
+    // updatedAt: true,
+    updatedAt: 'update_at',
 })
 module.exports = User

@@ -111,6 +111,7 @@ class BlogController {
 
     static async blogList(ctx){
         let request = ctx.request.body;
+        console.log(request)
         if(!request.params || !request.params['pageSize'] || !request.params['pageNo'] ){
             ctx.code = 400;
             return ctx.body = {

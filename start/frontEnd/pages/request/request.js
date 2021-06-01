@@ -40,6 +40,19 @@ Page({
       url: '/pages/action/action',
     })
   },
+  listBlog(){
+    let data ={
+      userId:1,
+      params:{
+        pageSize:10,
+        pageNo:1
+      }
+    }
+    wx.$http.getBlogList(data).then(res => {
+      console.log(res)
+    })
+
+  },
   /**
    * 生命周期函数--监听页面加载
    */

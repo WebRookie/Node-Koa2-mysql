@@ -9,6 +9,8 @@ const api = {
   // 用户签到
   userSign:data=>post(`/userSign`,data),
   // 发布博客
-  publishBlog:data=>post(`/publishBlog`,data)
+  publishBlog:data=>post(`/publishBlog`,data),
+  // 查看博客列表
+  getBlogList: data=>post('/listAllBlog',data)
 }
 module.exports = api

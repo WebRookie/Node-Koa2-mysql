@@ -46,10 +46,10 @@ Blog.init({
     sequelize,
     tableName:'blog',
     timestamps:true,
-    createdAt:'created_at',
-    updatedAt:'updated_at',
+    createdAt:'create_at',
+    updatedAt:'update_at',
 })
 
 module.exports = Blog
 
-// 需要写对应的持久层方法，sequelize才会自动生成相应的表
+// 需要写对应的持久层方法，sequelize才会自动生成相应的表 (也就是增删改查~)
