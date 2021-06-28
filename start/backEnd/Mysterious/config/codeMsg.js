@@ -15,3 +15,14 @@ export const NOT_LOGIN_ERROR = 2027;
 
 //暂无权限
 export const NO_AUTH_ERROR = 2028;
+
+
+// -------------------------
+// 预警邮箱账号
+export const WARNNING_ACCOUNT = '912962951@qq.com';
+
+// 信息发送方
+export const E_SENDER = '912962951@qq.com';
+
+// 信息接收方
+export const E_ACCEPTOR = ['912962951@qq.com','867963197@qq.com']
