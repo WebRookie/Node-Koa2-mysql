@@ -1,5 +1,6 @@
 
-const baseUrl = 'http://127.0.0.1:3000'
+// const baseUrl = 'http://127.0.0.1:3000'
+const baseUrl = 'http://1.15.51.66:5200'
 
 
 export function get(url,data = {}){

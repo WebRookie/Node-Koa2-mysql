@@ -59,7 +59,7 @@ class BlogModel {
 class BlogController {
     /**
      * 
-     * @param {传入的参数有userId，conent} ctx 
+     * @param {传入的参数有userId，content} ctx 
      */
     static async blogPublish(ctx) {
         let request = ctx.request.body;

@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "koa": "^2.7.0",
     "koa-body": "^4.2.0",

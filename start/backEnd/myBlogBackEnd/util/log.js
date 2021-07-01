@@ -34,6 +34,9 @@ let formatResponse = (ctx, resTime) => {
 
     //响应日志开始
     logText+= '\n ************************ response log start ************************** \n';
+    
+    // 时间信息
+    logText += `response time: ${moment().format('YYYY-MM-DD: hh:mm:ss')}`;
 
     //添加请求日志
     logText += formatRequestLog(ctx.request, resTime);
@@ -56,6 +59,9 @@ let formatError = (ctx, err, resTime) => {
 
     //错误日志开始  
     logText+= "\n"+ "************************ error log start **************************" + "\n";
+
+    // 时间信息
+    logText += `error time: ${moment().format('YYYY-MM-DD: hh:mm:ss')}`;
 
     //添加请求日志
     logText+= formatRequestLog(ctx.request, resTime);
@@ -81,6 +87,9 @@ let formatRequestLog = (req, resTime) => {
     let method = req.method;
     //访问方法
     logText+= `request method:  ${method}  \n`;
+
+    // 时间信息
+    logText += `request time: ${moment().format('YYYY-MM-DD: hh:mm:ss')}`;
 
     //请求原始地址
     logText+= `request originalUrl ${req.originalUrl} \n`;
